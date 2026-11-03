@@ -1,0 +1,4 @@
+data/src/
+data/art/
+__pycache__/
+*.pyc
