@@ -11,7 +11,7 @@ The live router (name + description retrieval) is never touched. Only what enter
 ![python](https://img.shields.io/badge/python-3.10+-ffffff?style=flat-square&labelColor=000000)
 ![compute](https://img.shields.io/badge/compute-cpu%20only-ffffff?style=flat-square&labelColor=000000)
 ![data](https://img.shields.io/badge/data-338%20public%20skills-ffffff?style=flat-square&labelColor=000000)
-![verdict](https://img.shields.io/badge/hypothesis-failed%20vs%20similarity-ffffff?style=flat-square&labelColor=000000)
+![verdict](https://img.shields.io/badge/hypothesis-failed-ffffff?style=flat-square&labelColor=000000)
 
 ![The dashboard](docs/screenshots/hero.png)
 
@@ -54,7 +54,7 @@ calibration and test, so every test candidate and every test library skill is un
 
 ## The Results
 
-Three seeds, 1,000 held-out test streams each, CPU only, 31.5 minutes wall on 8 vCPU. At α = 0.05:
+Three seeds, 1,000 held-out test streams each, CPU only, 31.5 minutes wall on 8 vCPU. Real + SYNTH stream, α = 0.05:
 
 | method | misroute risk | accuracy | library | SYNTH published |
 |---|---|---|---|---|
@@ -68,6 +68,11 @@ The bound holds: test risk sits under α on every seed at α = 0.02, 0.05 and 0.
 three. skilladmit beats always-admit by about 6 accuracy points. It does **not** beat a similarity threshold tuned
 on the same calibration split: the gap is −0.07 to +0.35 points against the brief's +3. The hypothesis fails on that
 criterion. On this data, "is it too close to something already here" is almost all the signal there is.
+
+The real-only stream (24 real candidates, no SYNTH) is worse news. Admitting everything already stays under
+α = 0.05 there (risk 0.040), and the finite-sample LTT certificate is strict enough that at α = 0.05 the gate stages
+over half the real skills and loses 6 to 22 accuracy points. The guarantee holds. It is just not worth its price
+when the library is not being flooded with forks.
 
 ![Every config on held-out streams](docs/screenshots/frontier.png)
 
