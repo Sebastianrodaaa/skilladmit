@@ -140,25 +140,68 @@ to within 0.002 risk (skilladmit at α = 0.05: 0.0247 on test-IID, 0.0229 on tes
 
 ![admissions](screenshots/admissions.png)
 
-<!-- REAL_ONLY -->
+### 4.2 Real candidates only (3 seeds × 1,000 test streams)
+
+Same pools, router, training and grid, but each stream offers 24 real unseen skills and no SYNTH candidates. This
+is the check that the result is not an artefact of the string-edit duplicates.
+
+| α | method | config (seed 0) | misroute risk | inside bound | accuracy | library | real staged / 24 |
+|---|---|---|---|---|---|---|---|
+| 0.02 | skilladmit | dm/0.95/0.7 | 0.0048 ± 0.0021 | 3/3 | 0.497 ± 0.006 | 42.6 | 21.39 |
+| 0.02 | always-admit | always | 0.0397 ± 0.0032 | 0/3 | 0.709 ± 0.018 | 64.0 | 0 |
+| 0.02 | similarity (LTT τ) | sim/0.025 | 0.0044 ± 0.0014 | 3/3 | 0.497 ± 0.016 | 42.8 | 21.24 |
+| 0.05 | skilladmit | dm/0.9/0.3 | 0.0161 ± 0.0104 | 3/3 | 0.577 ± 0.052 | 50.4 | 13.56 |
+| 0.05 | always-admit | always | 0.0397 ± 0.0032 | 3/3 | 0.709 ± 0.018 | 64.0 | 0 |
+| 0.05 | similarity (LTT τ) | sim/0.075 | 0.0209 ± 0.0069 | 3/3 | 0.622 ± 0.017 | 54.8 | 9.20 |
+| 0.05 | similarity (size-matched τ) | sim/0.075 | 0.0168 ± 0.0107 | 3/3 | 0.588 ± 0.052 | 51.6 | 12.41 |
+| 0.05 | oracle | oracle | 0.0294 ± 0.0039 | 3/3 | 0.717 ± 0.017 | 63.3 | 0.74 |
+| 0.1 | skilladmit | dm/0.3/0.3 | 0.0378 ± 0.0049 | 3/3 | 0.708 ± 0.018 | 63.7 | 0.29 |
+| 0.1 | always-admit | always | 0.0397 ± 0.0032 | 3/3 | 0.709 ± 0.018 | 64.0 | 0 |
+| 0.1 | similarity (LTT τ) | sim/0.25 | 0.0390 ± 0.0033 | 3/3 | 0.708 ± 0.017 | 63.7 | 0.31 |
+
+This is a clean negative. With only real candidates, always-admit's risk (0.036–0.044 per seed) is already under
+α = 0.05 and 0.1, which is one of the brief's failure conditions. The gate still holds its bound, but at α = 0.05 it
+pays for it: LTT cannot certify the permissive configurations, so skilladmit stages 13.6 of 24 real skills and loses
+6.4, 10.9 and 22.4 points of accuracy to always-admit on the three seeds. The similarity arm has the same problem
+(it loses less on two seeds, more on none). At α = 0.1 every gate converges on "admit almost everything" and they
+tie within 0.7 points.
+
+The cause is the finite-sample price of the guarantee, not the model. A Hoeffding-Bentkus test with 1,000
+calibration streams and a Bonferroni split over 40 configurations needs a calibration risk of about 0.03 to certify
+α = 0.05 (p = 0.0035 at 0.030, 0.039 at 0.035, against a threshold of 0.0025). The permissive configurations sit at
+0.039–0.047, so they are refused even though their true risk is under α. Fixed-sequence testing (ordering the grid
+from strict to permissive) or more calibration streams would shrink that gap; neither was pre-registered, so neither
+is reported as the result.
+
+![risk](screenshots/risk.png)
+
 
 <!-- JUDGE -->
 
 ### 4.4 Wall-clock
 
-<!-- WALL -->
+All on one 8-vCPU box, no GPU, `multiprocessing` over streams.
+
+| run | wall | note |
+|---|---|---|
+| real + SYNTH, 3 seeds × (400 train + 3 × 1,000 eval streams) | 31 min 27 s | 588–666 s per seed |
+| real only, 3 seeds, same sizes | 65 min 7 s | 1,193–1,383 s per seed; shared the CPU with the judge run |
+| judge arm, seed 0, 100 streams | JUDGE_WALL | Qwen2.5-0.5B fp32 on CPU, shared the CPU with the real-only run |
+| one gate decision (DM features + scoring) | ~50–70 ms | dashboard live mode, 40-skill library |
+| DM training per seed | 2–4 s | 9,600 rows |
+
 
 ## 5. Verdict
 
 | criterion | result |
 |---|---|
-| (1) risk inside the α bound | **holds**: 9/9 seed × α cells for skilladmit |
-| always-admit not already under α | **holds**: always-admit's risk 0.108 is over every α tested (0/3 inside at 0.02 and 0.05; just over 0.1) |
-| (2a) ≥ 5 points above always-admit | **holds** in accuracy (+6.1 to +6.4, CIs exclude 0); always-admit cannot be size-matched, it always ends at 64 skills |
-| (2b) ≥ 3 points above similarity reject | **fails**: −0.07 to +0.35 points vs the size-matched τ, −0.01 to +0.13 vs the LTT τ |
+| (1) risk inside the α bound | **holds**: 9/9 seed × α cells for skilladmit on each stream (18/18) |
+| always-admit not already under α | **holds on real + SYNTH** (risk 0.108, over every α tested); **fails on real only** (risk 0.040, under α = 0.05 and 0.1) |
+| (2a) ≥ 5 points above always-admit | **holds on real + SYNTH** (+6.1 to +6.4, CIs exclude 0); **fails on real only** (−6.4 to −22.4 at α = 0.05, −0.1 to −0.2 at α = 0.1). always-admit cannot be size-matched, it always ends at 64 skills |
+| (2b) ≥ 3 points above similarity reject | **fails**: real + SYNTH −0.07 to +0.35 points vs the size-matched τ, −0.01 to +0.13 vs the LTT τ; real only −11.5 to +0.2 |
 | CI on gap vs the better baseline excludes 0 | **fails**: seed 0 vs the LTT τ includes 0; vs the size-matched τ, seed 0 is significantly negative |
 
-**The hypothesis fails.** The risk guarantee is real and holds out of sample, and gating clearly beats admitting
+**The hypothesis fails**, on both streams. On real + SYNTH the risk guarantee is real and holds out of sample, and gating clearly beats admitting
 everything. But the typed model does not earn its keep over a single calibrated similarity threshold. The oracle,
 which knows the gold labels, is only 0.6–0.7 points above skilladmit, so the ceiling for *any* gate on this data is
 far below the 3-point target. Most of the decision is already carried by "how close is this to something already
@@ -167,6 +210,9 @@ here".
 What the DM does differently is which skills it refuses. At matched size it publishes fewer SYNTH duplicates (0.35
 vs 0.41 per stream) and stages fewer real skills (0.13 vs 0.41), and its rewrite path publishes about 0.26
 narrowed descriptions per stream. These are small effects on accuracy.
+
+On the real-only stream the gate is not needed at α ≥ 0.05, because admitting everything is already safe, and at
+α = 0.05 the LTT certificate makes it refuse useful skills (section 4.2).
 
 ## 6. Why it failed, and what would change it
 
