@@ -1,0 +1,29 @@
+seed 0 done in 666.3 s
+  skilladmit  dm/0.3/0.3       test risk 0.0258 acc 0.7028 lib 52.4 gap +0.0000 
+  always      always           test risk 0.1107 acc 0.6417 lib 64.0 gap +0.0611 [0.059816611152126865, 0.06228174246210699]
+  sim_ltt     sim/0.25         test risk 0.0273 acc 0.7029 lib 53.0 gap -0.0001 [-0.0005035269272454046, 0.00022582312059982897]
+  sim_acc     sim/0.25         test risk 0.0273 acc 0.7029 lib 53.0 gap -0.0001 [-0.0005035269272454046, 0.00022582312059982897]
+  sim_size    sim/0.2          test risk 0.0258 acc 0.7035 lib 52.4 gap -0.0007 [-0.0010604543265661367, -0.0003967010689378149]
+  reject_all  reject_all       test risk 0.0000 acc 0.5584 lib 40.0 gap +0.1443 [0.1425969744366461, 0.14624346723183484]
+  oracle      oracle           test risk 0.0195 acc 0.7101 lib 51.8 gap -0.0074 [-0.007923249830515273, -0.006805192866939932]
+seed 1 done in 588.4 s
+  skilladmit  dm/0.3/0.3       test risk 0.0187 acc 0.7276 lib 52.0 gap +0.0000 
+  always      always           test risk 0.1066 acc 0.6648 lib 64.0 gap +0.0628 [0.06151196390808455, 0.06406424858745899]
+  sim_ltt     sim/0.275        test risk 0.0222 acc 0.7263 lib 53.0 gap +0.0013 [0.0008476682693337206, 0.0018414973619812884]
+  sim_acc     sim/0.275        test risk 0.0222 acc 0.7263 lib 53.0 gap +0.0013 [0.0008476682693337206, 0.0018414973619812884]
+  sim_size    sim/0.175        test risk 0.0188 acc 0.7242 lib 51.7 gap +0.0035 [0.002829154357061443, 0.004131918861961046]
+  reject_all  reject_all       test risk 0.0000 acc 0.5762 lib 40.0 gap +0.1514 [0.1495749398845595, 0.1531070430179411]
+  oracle      oracle           test risk 0.0142 acc 0.7346 lib 51.6 gap -0.0070 [-0.007530471369827825, -0.006423522503986388]
+seed 2 done in 619.8 s
+  skilladmit  dm/0.3/0.3       test risk 0.0241 acc 0.7440 lib 52.2 gap +0.0000 
+  always      always           test risk 0.1081 acc 0.6801 lib 64.0 gap +0.0639 [0.06267800692799608, 0.06514141822372313]
+  sim_ltt     sim/0.225        test risk 0.0250 acc 0.7435 lib 52.5 gap +0.0005 [0.0002731024904690023, 0.0006797996331390332]
+  sim_acc     sim/0.225        test risk 0.0250 acc 0.7435 lib 52.5 gap +0.0005 [0.0002731024904690023, 0.0006797996331390332]
+  sim_size    sim/0.175        test risk 0.0230 acc 0.7408 lib 51.9 gap +0.0032 [0.002694014717494901, 0.0037390031754001123]
+  reject_all  reject_all       test risk 0.0000 acc 0.5896 lib 40.0 gap +0.1544 [0.1524844464850276, 0.15631817207667248]
+  oracle      oracle           test risk 0.0177 acc 0.7497 lib 51.6 gap -0.0057 [-0.00616293439105589, -0.005198305163428367]
+wrote /home/ubuntu/skilladmit/results/metrics.json
+
+real	31m27.450s
+user	244m39.526s
+sys	0m9.606s

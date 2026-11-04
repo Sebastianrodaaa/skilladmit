@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>skilladmit</title>
+<link rel="icon" href="data:,">
+<style>
+:root{--bg:#000;--p:#0b0b0b;--p2:#141414;--ln:#262626;--ln2:#3a3a3a;--dim:#6b6b6b;--mid:#a3a3a3;--fg:#f2f2f2;--m:ui-monospace,"JetBrains Mono","SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:12px/1.45 var(--m)}
+button,select,textarea,input{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:250px 1fr 330px;grid-template-rows:44px 1fr;height:100vh;gap:8px;padding:8px}
+header{grid-column:1/4;display:flex;align-items:center;gap:12px;padding:0 12px;background:var(--p);border:1px solid var(--ln);border-radius:10px}
+.logo{font-weight:700;letter-spacing:.06em;display:flex;align-items:center;gap:8px}.logo b{width:10px;height:10px;background:var(--fg);border-radius:2px;display:inline-block}
+.tabs{display:flex;border:1px solid var(--ln2);border-radius:6px;overflow:hidden}.tabs button{background:none;border:0;padding:3px 12px;cursor:pointer;color:var(--dim)}
+.tabs button[aria-pressed=true]{background:var(--fg);color:#000}
+.chip{border:1px solid var(--ln2);border-radius:20px;padding:2px 10px;color:var(--mid);white-space:nowrap}.sp{flex:1}
+select{background:var(--p2);border:1px solid var(--ln2);border-radius:6px;padding:3px 6px}
+.side,main{display:flex;flex-direction:column;gap:8px;min-height:0;min-width:0}
+main{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:minmax(0,1.25fr) auto minmax(0,1fr);gap:8px}
+.panel{background:var(--p);border:1px solid var(--ln);border-radius:10px;padding:10px 12px;min-height:0;display:flex;flex-direction:column}
+.h{display:flex;justify-content:space-between;gap:8px;color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px}
+.list{overflow:auto;flex:1;margin:0 -6px}.row{display:grid;grid-template-columns:1fr 54px 54px;gap:6px;padding:3px 6px;border-radius:4px;cursor:pointer;color:var(--mid)}
+.row:hover{background:var(--p2)}.row[aria-selected=true]{background:var(--fg);color:#000}.row span:not(:first-child){text-align:right}
+canvas{width:100%;flex:1;min-height:0;display:block}
+.ctrl{grid-column:1/3;flex-direction:row;align-items:center;gap:10px;padding:8px 12px}.ctrl button{background:var(--fg);color:#000;border:0;border-radius:6px;padding:4px 14px;cursor:pointer;font-weight:700}
+input[type=range]{flex:1;accent-color:#fff}
+.results{grid-column:1/3;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}th,td{text-align:right;padding:3px 5px;border-bottom:1px solid #1b1b1b;white-space:nowrap}th:first-child,td:first-child{text-align:left}
+th{color:var(--dim);font-weight:400}tr.me td{color:var(--fg);font-weight:700}td{color:var(--mid)}
+.cand .nm{font-size:15px;font-weight:700;word-break:break-all}.cand .ds{color:var(--mid);max-height:84px;overflow:auto;margin:6px 0}
+.tag{display:inline-block;border:1px solid var(--ln2);border-radius:3px;padding:0 6px;font-size:10px;color:var(--mid);margin-right:4px}.tag.inv{background:var(--fg);color:#000;border-color:var(--fg)}
+.bars .b{display:grid;grid-template-columns:86px 1fr 40px;align-items:center;gap:8px;margin:5px 0}.track{height:14px;background:var(--p2);border:1px solid var(--ln);border-radius:3px;position:relative;overflow:hidden}
+.fill{position:absolute;inset:0 auto 0 0;background:var(--fg)}.fill.r{background:repeating-linear-gradient(135deg,var(--fg) 0 3px,#000 3px 5px)}.fill.w{background:var(--mid)}
+.thr{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--fg);mix-blend-mode:difference}
+.arms{display:grid;grid-template-columns:1fr auto;gap:2px 10px;color:var(--mid);margin-top:6px}.arms b{color:var(--fg);font-weight:400;text-align:right}
+.log{overflow:auto;flex:1;font-size:11px}.log div{padding:2px 0;border-bottom:1px solid #161616;color:var(--mid)}.log b{color:var(--fg);font-weight:400}.log .cur{background:var(--p2)}
+.grid{display:grid;gap:2px;font-size:10px}.grid div{text-align:center;padding:3px 0;border-radius:2px;color:var(--mid)}.grid .v{outline:1px solid var(--fg)}.grid .sel{background:var(--fg)!important;color:#000!important}
+.live textarea,.live input{background:var(--p2);border:1px solid var(--ln);border-radius:6px;padding:6px 8px;width:100%;margin-bottom:6px}.live textarea{resize:none;height:110px}
+.live button{background:var(--fg);color:#000;border:0;border-radius:6px;padding:4px 14px;cursor:pointer;font-weight:700}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;color:var(--mid);font-size:11px}.kv b{color:var(--fg);font-weight:400;text-align:right}
+.hide{display:none!important}.note{color:var(--dim);font-size:11px}.lib{overflow:auto;flex:1;font-size:11px;margin:0 -6px}.lib div{padding:1px 6px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lib div.n{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="logo"><b></b>skilladmit</div>
+  <div class="tabs" role="group" aria-label="mode"><button id="tReplay" aria-pressed="true">replay</button><button id="tLive" aria-pressed="false">live</button></div>
+  <span class="chip" id="runChip">-</span>
+  <span class="sp"></span>
+  <label class="note" for="mix">stream</label><select id="mix"></select>
+  <label class="note" for="alpha">α</label><select id="alpha"></select>
+  <span class="chip" id="cfg">-</span>
+</header>
+<div class="side">
+  <section class="panel" style="flex:0 0 44%"><div class="h"><span>test streams · s<span id="tseed"></span></span><span>risk sa / always</span></div><div class="list" id="list" role="listbox" aria-label="test streams"></div></section>
+  <section class="panel" style="flex:1"><div class="h"><span>published library</span><span id="nlib"></span></div><div class="lib" id="lib"></div></section>
+</div>
+<main>
+  <section class="panel"><div class="h"><span>skill map · t-sne of name+desc tf-idf</span><span id="mapNote"></span></div><canvas id="map" aria-label="skill embedding map"></canvas>
+    <div class="note">▪ base library &nbsp;● real candidate &nbsp;▲ SYNTH candidate &nbsp;filled = published by skilladmit · hollow = staged</div></section>
+  <section class="panel"><div class="h"><span>misroute ── skilladmit ╌ always ·· sim ─· oracle</span><span id="curNote"></span></div><canvas id="curve" aria-label="misroute curve"></canvas></section>
+  <section class="panel ctrl"><button id="play">play</button><input type="range" id="scrub" min="0" max="24" value="0" aria-label="stream step"><span id="pos" class="note">-</span></section>
+  <section class="panel results"><div class="h"><span id="resTitle">held-out test · real run</span><span id="resNote"></span></div><table id="tbl"></table></section>
+</main>
+<div class="side">
+  <section class="panel cand" id="candP"><div class="h"><span>candidate</span><span id="step">-</span></div>
+    <div><span class="tag" id="kind">-</span><span class="tag" id="dec">-</span></div><div class="nm" id="cname">-</div><div class="ds" id="cdesc">-</div>
+    <div class="bars" id="bars"></div><div class="arms" id="arms"></div></section>
+  <section class="panel live hide" id="liveP"><div class="h"><span>score a candidate skill</span><span>real dm · cpu</span></div>
+    <input id="lname" aria-label="skill name" value="pdf-tools" spellcheck="false">
+    <textarea id="ldesc" aria-label="skill description" spellcheck="false">Extract text and tables from PDF files, fill PDF forms, merge and split PDF documents.</textarea>
+    <div style="display:flex;gap:8px;align-items:center"><button id="go">score</button><span class="note" id="lstat">against the base library of the selected stream</span></div>
+    <div class="bars" id="lbars" style="margin-top:8px"></div><div class="kv" id="lkv"></div></section>
+  <section class="panel" style="flex:1"><div class="h"><span>gate log · skilladmit</span><span id="gid"></span></div><div class="log" id="log"></div></section>
+  <section class="panel" style="flex:0 0 auto"><div class="h"><span>ltt grid · calib risk · s<span id="gseed"></span></span><span>□ certified</span></div><div class="grid" id="grid"></div><div class="note" id="gridNote" style="margin-top:6px"></div></section>
+</div>
+</div>
+<script>
+const $=id=>document.getElementById(id),fmt=(x,d=3)=>x==null||isNaN(x)?"-":(+x).toFixed(d),esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const ARMS=["skilladmit","always","sim_ltt","oracle"],DASH={skilladmit:[[],2],always:[[6,4],1.3],sim_ltt:[[1.5,3],1.6],oracle:[[8,3,2,3],1]};
+const NAMES={skilladmit:"skilladmit (dm+ltt)",always:"always-admit",sim_ltt:"similarity reject (ltt τ)",sim_acc:"similarity reject (best-acc τ)",sim_size:"similarity reject (size-matched τ)",reject_all:"reject-all",oracle:"oracle (gold labels)",judge:"prompted qwen judge"};
+let S,T,cur=0,t=0,timer=null;
+const j=async(u,o)=>(await fetch(u,o)).json();
+const alpha=()=>$("alpha").value,mixData=()=>$("mix").value=="mixed"?S:S.extra.metrics_real_only;
+const head=()=>S.seeds[0].per_alpha[String(S.head_alpha)];
+async function init(){[S,T]=await Promise.all([j("/api/summary"),j("/api/traces")]);
+  $("alpha").innerHTML=S.alphas.map(a=>`<option ${a==S.head_alpha?"selected":""}>${a}</option>`).join("");
+  $("mix").innerHTML=`<option value="mixed">real + SYNTH dups</option>`+(S.extra.metrics_real_only?`<option value="real_only">real only</option>`:"");
+  $("alpha").onchange=$("mix").onchange=()=>{table();grid()};
+  $("runChip").textContent=`${S.seeds.length} seeds · ${S.n_episodes} streams/split · δ=${S.delta} · cpu×${S.cpu}`;
+  $("tseed").textContent=$("gseed").textContent=S.seeds[0].seed;
+  $("list").innerHTML=T.map(e=>`<div class="row" role="option" data-i="${e.id}"><span>stream ${String(e.id).padStart(2,"0")}</span><span>${fmt(e.arms.skilladmit.risk)}</span><span>${fmt(e.arms.always.risk)}</span></div>`).join("");
+  $("list").onclick=e=>{const r=e.target.closest(".row");if(r)pick(+r.dataset.i)};
+  $("scrub").oninput=e=>{t=+e.target.value;draw()};$("play").onclick=()=>timer?stop():play();
+  $("tReplay").onclick=()=>mode(0);$("tLive").onclick=()=>mode(1);$("go").onclick=liveGo;
+  addEventListener("resize",draw);table();grid();
+  const q=new URLSearchParams(location.search);pick(q.has("s")?+q.get("s"):T.reduce((b,e)=>e.arms.always.broken-e.arms.skilladmit.broken>b.arms.always.broken-b.arms.skilladmit.broken?e:b,T[0]).id);
+  if(q.has("t")){t=+q.get("t");draw()}if(q.has("live"))mode(1);if(q.has("play"))play()}
+function pick(i){stop();cur=i;const e=T[i],n=e.arms.skilladmit.steps.length;$("scrub").max=n;t=n;$("scrub").value=t;
+  [...$("list").children].forEach(r=>r.ariaSelected=+r.dataset.i==i);draw()}
+function draw(){const e=T[cur],A=e.arms,st=A.skilladmit.steps,n=st.length;$("scrub").value=t;
+  $("pos").textContent=`step ${t}/${n} · library ${t?st[t-1].lib:e.n_base} skills`;
+  $("cfg").textContent="trace cfg "+head().configs.skilladmit.replace(/^dm\//,"λa/λr ");
+  const c=st[Math.max(0,t-1)];$("step").textContent=t?`step ${t}/${n}`:"before step 1";
+  $("kind").textContent=c.kind.replace("_"," ");$("kind").className="tag"+(c.kind=="real"?"":" inv");
+  $("dec").textContent=t?c.decision:"-";$("cname").textContent=c.name;$("cdesc").textContent=c.published&&c.published!=c.desc?c.desc+"\n→ rewritten: "+c.published:c.desc;
+  const cfg=head().configs.skilladmit.split("/"),la=+cfg[1],lr=cfg[2]=="None"?null:+cfg[2],p=c.p||[0,0,0];
+  $("bars").innerHTML=["admit","reject","rewrite_desc"].map((l,i)=>`<div class="b"><span>${l}</span><div class="track"><div class="fill ${l[0]=="a"?"":l[0]=="r"&&l[1]=="e"&&l[2]=="j"?"r":"w"}" style="width:${p[i]*100}%"></div>${i==0?`<div class="thr" style="left:${la*100}%"></div>`:i==2&&lr!=null?`<div class="thr" style="left:${lr*100}%"></div>`:""}</div><span>${fmt(p[i],2)}</span></div>`).join("")+(c.p_rw?`<div class="note">rewritten p(admit) ${fmt(c.p_rw[0],2)} vs λa ${la}</div>`:"");
+  $("arms").innerHTML=ARMS.map(a=>`<span>${NAMES[a]}</span><b>${t?A[a].steps[t-1].decision:"-"}</b>`).join("")+`<span>top-1 similarity to library</span><b>${fmt(c.s1,3)}</b>`;
+  const lib=e.arms.skilladmit.base.map(b=>`<div title="${esc(b.repo)}">${esc(b.name)}</div>`);st.slice(0,t).forEach(s=>{if(s.decision!="reject")lib.push(`<div class="n">+ ${esc(s.name)}${s.decision=="rewrite_desc"?" (rewritten)":""}</div>`)});
+  $("lib").innerHTML=lib.reverse().join("");$("nlib").textContent=lib.length;
+  $("log").innerHTML=st.map((s,i)=>`<div class="${i==t-1?"cur":""}${i>=t?" hide":""}"><b>t=${i+1}</b> ${s.decision.toUpperCase()} ${esc(s.name)} <span class="note">${s.kind}${s.p?` p=${s.p.map(v=>fmt(v,2)).join("/")}`:""} · risk ${fmt(s.risk,3)}</span></div>`).join("");
+  $("log").scrollTop=1e9;$("gid").textContent=`final risk ${fmt(A.skilladmit.risk)} · always ${fmt(A.always.risk)}`;
+  $("mapNote").textContent=`${e.n_base} base + ${n} candidates`;$("curNote").textContent=`stream ${cur}`;map();curve()}
+function ctx(id){const cv=$(id),r=cv.getBoundingClientRect(),dp=devicePixelRatio||1;cv.width=r.width*dp;cv.height=r.height*dp;const x=cv.getContext("2d");x.scale(dp,dp);x.font="10px "+getComputedStyle(document.body).fontFamily;return[x,r.width,r.height]}
+function map(){const[x,W,H]=ctx("map"),e=T[cur],st=e.arms.skilladmit.steps,pad=14,P=([a,b])=>[pad+(W-2*pad)*(a+1)/2,pad+(H-2*pad)*(1-(b+1)/2)];
+  x.strokeStyle="#161616";for(let v=0;v<=4;v++){x.beginPath();x.moveTo(pad+(W-2*pad)*v/4,0);x.lineTo(pad+(W-2*pad)*v/4,H);x.stroke();x.beginPath();x.moveTo(0,pad+(H-2*pad)*v/4);x.lineTo(W,pad+(H-2*pad)*v/4);x.stroke()}
+  e.xy.slice(0,e.n_base).forEach(q=>{const[a,b]=P(q);x.fillStyle="#5a5a5a";x.fillRect(a-2,b-2,4,4)});
+  st.forEach((s,i)=>{const[a,b]=P(e.xy[e.n_base+i]),seen=i<t,pub=seen&&s.decision!="reject";x.lineWidth=1.3;x.strokeStyle=seen?"#f2f2f2":"#333";x.fillStyle="#f2f2f2";x.beginPath();
+    if(s.kind=="real")x.arc(a,b,4.5,0,7);else{x.moveTo(a,b-5.5);x.lineTo(a+5,b+4);x.lineTo(a-5,b+4);x.closePath()}pub?x.fill():x.stroke();
+    if(i==t-1){x.beginPath();x.arc(a,b,10,0,7);x.stroke();x.fillText(s.name.slice(0,34),a+13,b+3)}});}
+function curve(){const[x,W,H]=ctx("curve"),A=T[cur].arms,n=A.skilladmit.steps.length,pl=34,pad=12;
+  const mx=Math.max(.05,...ARMS.map(a=>Math.max(...A[a].steps.map(s=>s.risk))))*1.1,X=i=>pl+(W-pl-pad)*i/n,Y=v=>H-pad-(H-2*pad)*v/mx;
+  x.fillStyle="#6b6b6b";x.strokeStyle="#1c1c1c";for(let k=0;k<=4;k++){const v=mx*k/4;x.beginPath();x.moveTo(pl,Y(v));x.lineTo(W,Y(v));x.stroke();x.fillText(fmt(v,2),2,Y(v)+3)}
+  const al=+alpha();x.setLineDash([2,5]);x.strokeStyle="#6b6b6b";x.beginPath();x.moveTo(pl,Y(al));x.lineTo(W,Y(al));x.stroke();x.fillText("α "+al,W-40,Y(al)-4);
+  ARMS.forEach(a=>{const[d,w]=DASH[a];x.setLineDash(d);x.lineWidth=w;x.strokeStyle=a=="skilladmit"?"#f2f2f2":"#a3a3a3";x.beginPath();x.moveTo(X(0),Y(0));A[a].steps.forEach((s,i)=>x.lineTo(X(i+1),Y(s.risk)));x.stroke()});
+  x.setLineDash([]);x.fillStyle="rgba(0,0,0,.6)";x.fillRect(X(t),0,W-X(t),H);x.fillStyle="#f2f2f2";x.fillRect(X(t)-.5,0,1,H)}
+function agg(rows,f){const v=rows.map(f).filter(x=>x!=null);return v.length?[v.reduce((a,b)=>a+b,0)/v.length,Math.sqrt(v.reduce((a,b)=>a+(b-v.reduce((p,q)=>p+q,0)/v.length)**2,0)/v.length)]:[null,null]}
+function table(){const D=mixData(),rows=D.seeds.map(s=>s.per_alpha[alpha()]),ms=Object.keys(rows[0].methods),pm=(r,d=3)=>`${fmt(r[0],d)}<span class="note"> ±${fmt(r[1],d)}</span>`;
+  $("resTitle").textContent=`held-out test streams · ${D.seeds.length} seeds × ${S.n_episodes} · α=${alpha()} δ=${S.delta} · ${$("mix").value=="mixed"?"real + SYNTH near-dups":"real candidates only"}`;
+  $("resNote").textContent="mean ± sd over seeds";
+  let h="<tr><th>method</th><th>config s0</th><th>cert</th><th>misroute</th><th title='pooled test risk ≤ binomial 97.5% quantile of α'>in bound</th><th>accuracy</th><th title='skilladmit − method, points'>Δacc</th><th title='seeds whose 95% bootstrap CI excludes 0'>CI≠0</th><th>lib</th><th>adm</th><th>rw</th><th>synth in</th><th>staged</th><th>iid risk</th></tr>";
+  for(const m of ms){const R=rows.map(r=>r.methods[m]),te=f=>agg(R,r=>f(r.test)),nv=rows[0].n_valid[m];
+    const gap=agg(R,r=>r.acc_gap_skilladmit_minus==null?null:-r.acc_gap_skilladmit_minus),ex=R.filter(r=>r.acc_gap_ci95&&(r.acc_gap_ci95[0]>0||r.acc_gap_ci95[1]<0)).length;
+    h+=`<tr class="${m=="skilladmit"?"me":""}"><td>${NAMES[m]||m}</td><td>${rows[0].configs[m]}</td><td>${nv==null?"-":rows.map(r=>r.n_valid[m]).join("/")}</td><td>${pm(te(x=>x.risk))}</td><td>${R.filter(r=>r.inside_binomial_95).length}/${R.length}</td><td>${pm(te(x=>x.acc))}</td><td>${m=="skilladmit"?"-":pm(gap)}</td><td>${m=="skilladmit"?"-":ex+"/"+R.length}</td><td>${fmt(te(x=>x.lib)[0],1)}</td><td>${fmt(te(x=>x.admit)[0],1)}</td><td>${fmt(te(x=>x.rewrite_desc)[0],2)}</td><td>${fmt(te(x=>x.synth_admitted)[0],2)}</td><td>${fmt(te(x=>x.real_rejected)[0],2)}</td><td>${fmt(agg(R,r=>r.test_iid.risk)[0])}</td></tr>`}
+  const J=S.extra.judge;if(J&&$("mix").value=="mixed"&&alpha()==String(S.head_alpha)){const q=J.methods.judge;h+=`<tr><td>${NAMES.judge} <span class="note">small: seed ${J.seed}, ${J.n_episodes} streams, uncalibrated</span></td><td>p≥${J.threshold}</td><td>-</td><td>${fmt(q.risk)}</td><td>-</td><td>${fmt(q.acc)}</td><td>${fmt(-q.acc_gap_skilladmit_minus)}</td><td>${q.acc_gap_ci95[0]>0||q.acc_gap_ci95[1]<0?"1/1":"0/1"}</td><td>${fmt(q.lib,1)}</td><td>${fmt(q.admit,1)}</td><td>-</td><td>${fmt(q.synth_admitted,2)}</td><td>${fmt(q.real_rejected,2)}</td><td>-</td></tr>`}
+  $("tbl").innerHTML=h}
+function grid(){const s=S.seeds[0],la=[...S.grid.lambda_admit],lr=[...S.grid.lambda_rewrite],a=+alpha(),sel=s.per_alpha[alpha()].configs.skilladmit;
+  $("grid").style.gridTemplateColumns=`52px repeat(${lr.length},1fr)`;let h=`<div class="note">λa \\ λr</div>`+lr.map(r=>`<div class="note">${r==null?"off":r}</div>`).join("");
+  for(const A of la){h+=`<div class="note">${A}</div>`;for(const R of lr){const k=`dm/${A}/${R==null?"None":R}`,g=s.calib_dm[k],v=s.valid[alpha()].includes(k),sh=Math.round(20+200*Math.min(1,g.risk/(2*a)));
+    h+=`<div class="${v?"v":""} ${k==sel?"sel":""}" style="background:rgb(${sh},${sh},${sh});color:${sh>120?"#000":"#ccc"}" title="${k} calib risk ${fmt(g.risk,4)} acc ${fmt(g.acc,3)}">${fmt(g.risk*100,1)}</div>`}}
+  $("grid").innerHTML=h;$("gridNote").textContent=`cells: calib misroute % · brighter = riskier · selected ${sel} · LTT floor α≈${fmt(s.ltt_floor_alpha,3)}`}
+function play(){const n=T[cur].arms.skilladmit.steps.length;if(t>=n)t=0;$("play").textContent="pause";const step=()=>{t++;draw();if(t>=n)return stop();timer=setTimeout(step,650)};timer=setTimeout(step,200)}
+function stop(){clearTimeout(timer);timer=null;$("play").textContent="play"}
+function mode(m){$("tReplay").ariaPressed=!m;$("tLive").ariaPressed=!!m;$("candP").classList.toggle("hide",!!m);$("liveP").classList.toggle("hide",!m)}
+async function liveGo(){$("lstat").textContent="scoring on cpu…";const t0=performance.now();
+  const r=await j("/api/live",{method:"POST",body:JSON.stringify({id:cur,name:$("lname").value,desc:$("ldesc").value,cfg:head().configs.skilladmit})});
+  if(r.error){$("lstat").textContent=r.error;return}$("lstat").textContent=`${r.decision.toUpperCase()} · ${fmt(performance.now()-t0,0)} ms · stream ${cur} base library`;
+  $("lbars").innerHTML=r.A.map((l,i)=>`<div class="b"><span>${l}</span><div class="track"><div class="fill ${i==1?"r":i==2?"w":""}" style="width:${r.p[i]*100}%"></div></div><span>${fmt(r.p[i],2)}</span></div>`).join("");
+  $("lkv").innerHTML=r.near.map(q=>`<span>nn ${esc(q.name)}</span><b>${fmt(q.sim,3)}</b>`).join("")+["s1","n_stolen","frac_stolen","frac_attract"].map(k=>`<span>${k}</span><b>${fmt(r.feats[k],3)}</b>`).join("")+(r.rewritten?`<span>rewrite_desc →</span><b style="text-align:left">${esc(r.rewritten)}</b>`:"")}
+init();
+</script>
+</body>
+</html>

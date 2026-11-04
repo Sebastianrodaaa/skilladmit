@@ -1,0 +1,5 @@
+{"risk": 0.11147470878506233, "broken": 11.96, "prev_ok": 106.92, "acc": 0.6400478376293538, "lib": 63.98, "admit": 23.98, "reject": 0.02, "rewrite_desc": 0.0, "synth_admitted": 12.0, "real_rejected": 0.02, "pooled_risk": 0.11185933408155631, "acc_gap_skilladmit_minus": 0.05995568152819054, "acc_gap_ci95": [0.05615476076943106, 0.06382709119971941]} 5338.9 s
+
+real	89m4.240s
+user	428m21.790s
+sys	7m33.405s
