@@ -176,7 +176,26 @@ is reported as the result.
 ![risk](screenshots/risk.png)
 
 
-<!-- JUDGE -->
+### 4.3 Prompted judge (small-scale: seed 0, 100 real + SYNTH test streams, uncalibrated)
+
+Qwen2.5-0.5B-Instruct (pinned revision `7ae5576`, fp32, CPU) sees the candidate and its 5 nearest library skills and
+answers admit or reject. p(admit) comes from the next-token logits of the two words, and the arm admits when
+p(admit) ≥ 0.5. It is not calibrated and not risk-controlled, and it ran on 100 streams instead of 1,000 because
+2,397 distinct prompts took 89 minutes. All five arms below use the same 100 streams.
+
+| method | misroute risk | accuracy | library | admitted / 24 |
+|---|---|---|---|---|
+| prompted judge | 0.1115 | 0.6400 | 63.98 | 23.98 |
+| always-admit | 0.1115 | 0.6402 | 64.00 | 24.00 |
+| skilladmit (α = 0.05) | 0.0276 | 0.7000 | 52.34 | 12.16 |
+| similarity (LTT τ) | 0.0294 | 0.7003 | 53.03 | 13.03 |
+| oracle | 0.0207 | 0.7075 | 51.78 | 10.49 |
+
+The judge is degenerate. It said admit to 2,398 of the 2,400 candidates, including all 12 SYNTH forks per stream, so
+it is always-admit with an 89-minute overhead. Skilladmit is 6.0 points more accurate than the judge (paired
+bootstrap 95% CI [5.6, 6.4]). A 0.5B model asked "does this overlap?" does not see near-duplicates that a TF-IDF
+cosine catches. Larger judges (Prism, the brief's suggested DM) do not fit on CPU and were not run.
+
 
 ### 4.4 Wall-clock
 
@@ -186,7 +205,7 @@ All on one 8-vCPU box, no GPU, `multiprocessing` over streams.
 |---|---|---|
 | real + SYNTH, 3 seeds × (400 train + 3 × 1,000 eval streams) | 31 min 27 s | 588–666 s per seed |
 | real only, 3 seeds, same sizes | 65 min 7 s | 1,193–1,383 s per seed; shared the CPU with the judge run |
-| judge arm, seed 0, 100 streams | JUDGE_WALL | Qwen2.5-0.5B fp32 on CPU, shared the CPU with the real-only run |
+| judge arm, seed 0, 100 streams | 89 min 4 s (2,397 prompts) | Qwen2.5-0.5B fp32 on CPU, shared the CPU with the real-only run |
 | one gate decision (DM features + scoring) | ~50–70 ms | dashboard live mode, 40-skill library |
 | DM training per seed | 2–4 s | 9,600 rows |
 

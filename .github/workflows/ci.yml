@@ -12,4 +12,5 @@ jobs:
       - run: ruff check --select E9,F skilladmit app scripts test_skilladmit.py
       - run: python3 -m skilladmit.ltt
       - run: python3 test_skilladmit.py
+      - run: python3 -c "import re;open('/tmp/app.js','w').write(re.search(r'<script>(.*)</script>',open('app/index.html').read(),re.S).group(1))" && node --check /tmp/app.js  # dashboard JS parses
       - run: python3 -m skilladmit.run --seeds 0 --n 40 --n_train 40 --out /tmp/ci_metrics.json  # small-scale smoke
