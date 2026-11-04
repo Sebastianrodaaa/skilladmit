@@ -1,0 +1,96 @@
+{
+ "seed": 0,
+ "n_episodes": 100,
+ "model": "Qwen/Qwen2.5-0.5B-Instruct",
+ "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+ "threshold": 0.5,
+ "n_prompts": 2397,
+ "sec": 5338.9,
+ "methods": {
+  "judge": {
+   "risk": 0.11147470878506233,
+   "broken": 11.96,
+   "prev_ok": 106.92,
+   "acc": 0.6400478376293538,
+   "lib": 63.98,
+   "admit": 23.98,
+   "reject": 0.02,
+   "rewrite_desc": 0.0,
+   "synth_admitted": 12.0,
+   "real_rejected": 0.02,
+   "pooled_risk": 0.11185933408155631,
+   "acc_gap_skilladmit_minus": 0.05995568152819054,
+   "acc_gap_ci95": [
+    0.05615476076943106,
+    0.06382709119971941
+   ]
+  },
+  "skilladmit": {
+   "risk": 0.027595209707217218,
+   "broken": 2.96,
+   "prev_ok": 106.82,
+   "acc": 0.7000035191575443,
+   "lib": 52.34,
+   "admit": 12.16,
+   "reject": 11.66,
+   "rewrite_desc": 0.18,
+   "synth_admitted": 0.39,
+   "real_rejected": 0.05,
+   "pooled_risk": 0.027710166635461525
+  },
+  "always": {
+   "risk": 0.11151490071347653,
+   "broken": 11.97,
+   "prev_ok": 106.96,
+   "acc": 0.640247183190363,
+   "lib": 64.0,
+   "admit": 24.0,
+   "reject": 0.0,
+   "rewrite_desc": 0.0,
+   "synth_admitted": 12.0,
+   "real_rejected": 0.0,
+   "pooled_risk": 0.1119109947643979,
+   "acc_gap_skilladmit_minus": 0.05975633596718132,
+   "acc_gap_ci95": [
+    0.05596379779385056,
+    0.0637202021083605
+   ]
+  },
+  "sim_ltt": {
+   "risk": 0.02943906683681837,
+   "broken": 3.17,
+   "prev_ok": 107.07,
+   "acc": 0.7002756437062164,
+   "lib": 53.03,
+   "admit": 13.03,
+   "reject": 10.97,
+   "rewrite_desc": 0.0,
+   "synth_admitted": 1.05,
+   "real_rejected": 0.02,
+   "pooled_risk": 0.02960679929018399,
+   "acc_gap_skilladmit_minus": -0.00027212454867216017,
+   "acc_gap_ci95": [
+    -0.0015123356784856549,
+    0.0008715917110166363
+   ]
+  },
+  "oracle": {
+   "risk": 0.020662352103076317,
+   "broken": 2.21,
+   "prev_ok": 107.2,
+   "acc": 0.707541050855811,
+   "lib": 51.78,
+   "admit": 10.49,
+   "reject": 12.22,
+   "rewrite_desc": 1.29,
+   "synth_admitted": 0.0,
+   "real_rejected": 0.22,
+   "pooled_risk": 0.020615671641791046,
+   "acc_gap_skilladmit_minus": -0.007537531698266688,
+   "acc_gap_ci95": [
+    -0.009398317592891168,
+    -0.005796895506881496
+   ]
+  }
+ }
+}

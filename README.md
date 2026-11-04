@@ -74,6 +74,9 @@ The real-only stream (24 real candidates, no SYNTH) is worse news. Admitting eve
 over half the real skills and loses 6 to 22 accuracy points. The guarantee holds. It is just not worth its price
 when the library is not being flooded with forks.
 
+A prompted Qwen2.5-0.5B judge on CPU (small-scale: seed 0, 100 streams, uncalibrated) admitted 2,398 of 2,400
+candidates. That makes it always-admit with an 89-minute overhead, and 6.0 points less accurate than skilladmit.
+
 ![Every config on held-out streams](docs/screenshots/frontier.png)
 
 | | |
